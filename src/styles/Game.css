@@ -1,5 +1,6 @@
 .game {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 1fr);
-  grid-template-rows: 100px 100px;
+  grid-template-columns: repeat(auto-fit, 200px);
+  grid-template-rows: 300px 300px;
+  justify-content: space-evenly;
 }
