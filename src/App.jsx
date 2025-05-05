@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Scoreboard from "./components/Scoreboard";
 import Game from "./components/Game";
@@ -7,6 +7,8 @@ function App() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [message, setMessage] = useState("");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   // What is needed for memory card game
   // State to track current score, high score, guesses
@@ -19,18 +21,63 @@ function App() {
   // Image list or a Game component?
   // Image
 
+  // https://www.dnd5eapi.co/api/images/monsters/owlbear.png
+
+  useEffect(() => {
+    setLoading(true);
+    const monsterList = [
+      "adult-red-dragon",
+      "bugbear",
+      "bulette",
+      "drider",
+      "gelatinous-cube",
+      "gnoll",
+      "goblin",
+      "mimic",
+      "owlbear",
+      "pit-fiend",
+      "rakshasa",
+      "zombie",
+    ];
+    const fetchData = async (monster) => {
+      try {
+        const response = await fetch("https://www.dnd5eapi.co/api/2014/monsters/" + monster);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const json = await response.json();
+        return json;
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    const promises = monsterList.map((monster) => {
+      return fetchData(monster);
+    });
+    
+    Promise.all(promises).then(response => {
+      console.log(response);
+      setData(response);
+    });
+  }, []);
+
   return (
     <>
-      <h1>Memory Game</h1>
+      <h1>DnD Memory Game</h1>
       <Scoreboard score={score} highScore={highScore} />
       <p>{message}</p>
-      <Game
-        score={score}
-        setScore={setScore}
-        highScore={highScore}
-        setHighScore={setHighScore}
-        setMessage={setMessage}
-      />
+      {!loading && 
+        <Game
+          score={score}
+          setScore={setScore}
+          highScore={highScore}
+          setHighScore={setHighScore}
+          setMessage={setMessage}
+          data={data}
+        />
+      }
+      
     </>
   );
 }
