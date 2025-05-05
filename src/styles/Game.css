@@ -1,0 +1,5 @@
+.game {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 1fr);
+  grid-template-rows: 100px 100px;
+}
