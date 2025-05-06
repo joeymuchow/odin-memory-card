@@ -10,19 +10,6 @@ function App() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // What is needed for memory card game
-  // State to track current score, high score, guesses
-  // Hooks to get images and info from api
-  // Thinking about using DnD api for the game
-
-  // Components
-  // App holds - all below components
-  // Scoreboard - done
-  // Image list or a Game component?
-  // Image
-
-  // https://www.dnd5eapi.co/api/images/monsters/owlbear.png
-
   useEffect(() => {
     setLoading(true);
     const monsterList = [
@@ -41,7 +28,9 @@ function App() {
     ];
     const fetchData = async (monster) => {
       try {
-        const response = await fetch("https://www.dnd5eapi.co/api/2014/monsters/" + monster);
+        const response = await fetch(
+          "https://www.dnd5eapi.co/api/2014/monsters/" + monster
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -55,8 +44,8 @@ function App() {
     const promises = monsterList.map((monster) => {
       return fetchData(monster);
     });
-    
-    Promise.all(promises).then(response => {
+
+    Promise.all(promises).then((response) => {
       const arr = [];
       for (const item of response) {
         const dataObj = {
@@ -76,7 +65,7 @@ function App() {
       <h1>DnD Memory Game</h1>
       <Scoreboard score={score} highScore={highScore} />
       <p>{message}</p>
-      {!loading && 
+      {!loading && (
         <Game
           score={score}
           setScore={setScore}
@@ -85,8 +74,7 @@ function App() {
           setMessage={setMessage}
           data={data}
         />
-      }
-      
+      )}
     </>
   );
 }

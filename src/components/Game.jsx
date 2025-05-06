@@ -64,7 +64,7 @@ function checkGuess(value, guesses) {
 function randomizeImages(imageList) {
   const imageObjects = [...imageList];
   for (let i = 0; i < imageObjects.length; i++) {
-    let rand = Math.floor(Math.random() * (i+1));
+    let rand = Math.floor(Math.random() * (i + 1));
     let oldElement = imageObjects[i];
     imageObjects[i] = imageObjects[rand];
     imageObjects[rand] = oldElement;
