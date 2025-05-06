@@ -27,17 +27,17 @@ function App() {
     setLoading(true);
     const monsterList = [
       "adult-red-dragon",
+      "blink-dog",
       "bugbear",
       "bulette",
       "drider",
       "gelatinous-cube",
       "gnoll",
-      "goblin",
       "mimic",
+      "ogre",
       "owlbear",
       "pit-fiend",
       "rakshasa",
-      "zombie",
     ];
     const fetchData = async (monster) => {
       try {
@@ -57,8 +57,17 @@ function App() {
     });
     
     Promise.all(promises).then(response => {
-      console.log(response);
-      setData(response);
+      const arr = [];
+      for (const item of response) {
+        const dataObj = {
+          name: item.name,
+          image: item.image,
+          index: item.index,
+        };
+        arr.push(dataObj);
+      }
+      setData(arr);
+      setLoading(false);
     });
   }, []);
 
